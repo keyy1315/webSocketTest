@@ -11,8 +11,8 @@ public class Config extends Configurator {
     public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
         HttpSession session = (HttpSession) request.getHttpSession();
         if(session!=null) {
-            String sess = session.getId().substring(0,6);
-            sec.getUserProperties().put("PRIVATE_HTTP_SESSION", sess);
+            sec.getUserProperties().put("PRIVATE_HTTP_SESSION", session);
         }
     }
+
 }
