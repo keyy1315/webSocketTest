@@ -13,6 +13,15 @@
 <button onclick="openSocket();">Open Socket</button>
 <button onclick="sendMessage();">Send Message</button>
 <button onclick="closeSocket();">Close Socket</button>
+<select class="form-select" multiple aria-label="Multiple select example">
+    <option selected>Open this select menu</option>
+    <c:forEach items="${chatRoomList}" var="chatRoomDto" varStatus="loop">
+        <option value="${chatRoomList.chat_id}">${chatRoomList.subject}</option>
+    </c:forEach>
+<%--    <option value="1">One</option>--%>
+<%--    <option value="2">Two</option>--%>
+<%--    <option value="3">Three</option>--%>
+</select>
 <br/>
 <input type="text" id="messageInput" placeholder="Enter message">
 <div id="messages"></div>

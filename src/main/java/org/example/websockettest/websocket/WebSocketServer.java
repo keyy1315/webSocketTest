@@ -23,6 +23,7 @@ public class WebSocketServer {
         System.out.println("client is now connected... : " + session.getId());
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
 
+        
         sessionList.add(session);
         System.out.println(sessionList);
 
