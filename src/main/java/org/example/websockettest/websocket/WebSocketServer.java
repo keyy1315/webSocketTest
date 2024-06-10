@@ -30,23 +30,15 @@ public class WebSocketServer {
         // 메시지 내용을 콘솔에 출력한다.
         System.out.println("receive from client : " + session.getId() + " : " + message);
 //        HttpSession httpSession = clientsMap.get(session);
-        try {
-            synchronized (sessionList) {
-
-                for (Session client :sessionList) {
-//                    clients 에 들어있는 모든 유저에게 메세지 전달 할 거임(보낸 사람도 포함)
-//                    if (!session.equals(client)) {
-                        session.getBasicRemote().sendText(message);
-                        System.out.println("basic remote : "+session.getBasicRemote());
-
-//                    }
+            sessionList.forEach(session1 -> {
+                if(session1 == session) {
+                    return;
+                } try {
+                    session1.getBasicRemote().sendText(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }
-            // remoteEndpoint 리턴
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+            });
     }
 
     // WebSocket과 브라우저가 접속이 끊기면 요청되는 함수
