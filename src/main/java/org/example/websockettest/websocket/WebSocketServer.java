@@ -11,10 +11,10 @@ import java.util.*;
 @ServerEndpoint(value = "/websocket",
         configurator = Config.class)
 public class WebSocketServer {
-    private final Map<Long, List<Session>> chatRoomSessionMap = new HashMap<>();
-    private final Map<Session, HttpSession> clientsMap = new HashMap<Session, HttpSession>();
+   // private final Map<Long, List<Session>> chatRoomSessionMap = new HashMap<>();
+    private static Map<Session, HttpSession> clientsMap = new HashMap<Session, HttpSession>();
     // login id 얻어오기 위해 ws session, http session 담은 맵
-    private final List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
+    private static List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
     // websocket session list
 
     @OnOpen
