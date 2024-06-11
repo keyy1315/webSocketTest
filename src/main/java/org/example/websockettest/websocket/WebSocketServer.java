@@ -7,6 +7,7 @@ import org.example.websockettest.dao.chatRoomDao;
 
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 
 @ServerEndpoint(value = "/websocket",
@@ -24,8 +25,8 @@ public class WebSocketServer {
         System.out.println("client is now connected... : " + session.getId());
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
 
-        long chatRoomId = inChatRoom(httpSession);
-
+        System.out.println(session.getRequestURI());
+        System.out.println(session.getPathParameters());
 
         sessionList.add(session);
         System.out.println(sessionList);
@@ -35,7 +36,7 @@ public class WebSocketServer {
         chatRoomSessionMap.put(chatRoomID, sessionList);
     }
 
-    private long inChatRoom(HttpSession httpSession) {
+    private long setChatRoomId(HttpSession httpSession) {
         chatRoomDao chatRoomDao = new chatRoomDao();
         return chatRoomDao.getChatRoomId(httpSession);
     }
@@ -47,7 +48,6 @@ public class WebSocketServer {
         System.out.println("ws Session( "+wsSession.getId() + " ) : " + message);
         HttpSession httpSession = clientsMap.get(wsSession);
 //        websocket 접속한 wsSession의 httpSession값
-
 
         sessionList.forEach(session -> {
             try {
