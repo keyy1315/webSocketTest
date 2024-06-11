@@ -5,7 +5,6 @@
     <title>WebSocket Test</title>
     </head>
     <body>
-<%--    <input type="hidden" value="<%=session.getId().substring(0,6)%>" id="chat_id" />--%>
     <%=session.getId()%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

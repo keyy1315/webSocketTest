@@ -3,6 +3,7 @@ package org.example.websockettest.websocket;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
+import org.example.websockettest.dao.chatRoomDao;
 
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.*;
 @ServerEndpoint(value = "/websocket",
         configurator = Config.class)
 public class WebSocketServer {
-   // private final Map<Long, List<Session>> chatRoomSessionMap = new HashMap<>();
+    private static Map<Long, List<Session>> chatRoomSessionMap = Collections.synchronizedMap(new HashMap<>());
     private static Map<Session, HttpSession> clientsMap = new HashMap<Session, HttpSession>();
     // login id 얻어오기 위해 ws session, http session 담은 맵
     private static List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
@@ -19,30 +20,42 @@ public class WebSocketServer {
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
-        // 콘솔에 접속 로그를 출력한다.
+        // client가 socket에 연결했을 떄...
         System.out.println("client is now connected... : " + session.getId());
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
 
-        
+        long chatRoomId = inChatRoom(httpSession);
+
+
         sessionList.add(session);
         System.out.println(sessionList);
-
         clientsMap.put(session, httpSession);
+
+        long chatRoomID = (long) (Math.random() * 100);
+        chatRoomSessionMap.put(chatRoomID, sessionList);
     }
 
-    // WebSocket으로 메시지가 오면 요청되는 함수
+    private long inChatRoom(HttpSession httpSession) {
+        chatRoomDao chatRoomDao = new chatRoomDao();
+        return chatRoomDao.getChatRoomId(httpSession);
+    }
+
     @OnMessage
-    public void onMessage(String message, Session session) {
-        // 메시지 내용을 콘솔에 출력한다.
-        System.out.println("receive from client : " + session.getId() + " : " + message);
-        HttpSession httpSession = clientsMap.get(session);
-        sessionList.forEach(session1 -> {
+    public void onMessage(String message, Session wsSession) {
+        // 메세지 핸들러...
+        // client 가 전송한 메세지 핸들링함
+        System.out.println("ws Session( "+wsSession.getId() + " ) : " + message);
+        HttpSession httpSession = clientsMap.get(wsSession);
+//        websocket 접속한 wsSession의 httpSession값
+
+
+        sessionList.forEach(session -> {
             try {
-                if (session1 == session) {
-                    session1.getBasicRemote().sendText("나|" + message);
+                if (session == wsSession) {
+                    session.getBasicRemote().sendText("나|" + message);
                 } else {
                     String sessionId = httpSession.getId();
-                    session1.getBasicRemote().sendText(sessionId + "|" + message);
+                    session.getBasicRemote().sendText(sessionId + "|" + message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
