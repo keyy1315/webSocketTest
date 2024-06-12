@@ -14,5 +14,4 @@ public class Config extends Configurator {
             sec.getUserProperties().put("PRIVATE_HTTP_SESSION", session);
         }
     }
-
 }

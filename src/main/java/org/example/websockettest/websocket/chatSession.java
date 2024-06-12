@@ -11,11 +11,10 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Builder
 public class chatSession {
-    private Session session;
-    private long chatRoomId;
-    public void sendMessage(String message) throws IOException {
-        if (session.isOpen()) {
-            session.getBasicRemote().sendText(message);
-        }
-    }
+//    wsSession 객체 래핑!... chatroom관리할거임
+    private Session senderSession;
+    private Session receiverSession;
+    private String senderId;
+    private String receiverId;
+    private long chat_id;
 }
