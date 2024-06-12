@@ -54,7 +54,20 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>2.7.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>jakarta.websocket</groupId>
+            <artifactId>jakarta.websocket-api</artifactId>
+            <version>2.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+<!--        websocket ServerEndPoint Dependency-->
+        <dependency>
+            <groupId>jakarta.websocket</groupId>
+            <artifactId>jakarta.websocket-client-api</artifactId>
+            <version>2.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+<!--        websocket Client Handling Dependency-->
     </dependencies>
 
 
